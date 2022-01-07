@@ -15,17 +15,20 @@
  */
 package com.hpe.caf.worker.testing;
 
-import com.google.common.base.Strings;
-import com.hpe.caf.api.CodecException;
-import com.hpe.caf.api.worker.TaskMessage;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
-import java.io.IOException;
+import com.google.common.base.Strings;
+import com.hpe.caf.api.CodecException;
+import com.hpe.caf.api.worker.QueueTaskMessage;
+import com.hpe.caf.api.worker.TaskMessage;
 
 /**
  * Created by ploch on 08/11/2015.
  */
-public class ProcessorDeliveryHandler implements ResultHandler
+public class ProcessorDeliveryHandler<T> implements ResultHandler<T>
 {
     private final ResultProcessor resultProcessor;
     private ExecutionContext context;
@@ -33,16 +36,16 @@ public class ProcessorDeliveryHandler implements ResultHandler
 
     public ProcessorDeliveryHandler(ResultProcessor resultProcessor, ExecutionContext context, QueueManager queueManager)
     {
-
         this.resultProcessor = resultProcessor;
         this.context = context;
         this.queueManager = queueManager;
     }
 
     @Override
-    public void handleResult(TaskMessage taskMessage)
+    public void handleResult(final T input)
     {
 
+        final TaskMessage taskMessage = convertIntoTaskMessage(input);
         if (this.queueManager.isDebugEnabled()) {
             try {
                 queueManager.publishDebugOutput(taskMessage);
@@ -88,6 +91,29 @@ public class ProcessorDeliveryHandler implements ResultHandler
             context.getItemStore().remove(testItem.getTag());
         }
         checkForFinished();
+    }
+
+    private TaskMessage convertIntoTaskMessage(final T input)
+    {
+        final TaskMessage taskMessage;
+        if (input instanceof QueueTaskMessage) {
+            QueueTaskMessage qtm = (QueueTaskMessage)input;
+            taskMessage = new TaskMessage();
+            taskMessage.setContext(qtm.getContext());
+            taskMessage.setCorrelationId(qtm.getCorrelationId());
+            taskMessage.setPriority(qtm.getPriority());
+            taskMessage.setSourceInfo(qtm.getSourceInfo());
+            taskMessage.setTaskClassifier(qtm.getTaskClassifier());
+            taskMessage.setTaskApiVersion(qtm.getTaskApiVersion());
+            taskMessage.setTaskData(qtm.getTaskData().toString().getBytes(StandardCharsets.UTF_8));
+            taskMessage.setTaskStatus(qtm.getTaskStatus());
+            taskMessage.setTracking(qtm.getTracking());
+            taskMessage.setTaskId(qtm.getTaskId());
+            taskMessage.setVersion(qtm.getVersion());
+        } else {
+            taskMessage = (TaskMessage)input;
+        }
+        return taskMessage;
     }
 
     private String buildFailedMessage(TestItem testItem, Throwable throwable)
