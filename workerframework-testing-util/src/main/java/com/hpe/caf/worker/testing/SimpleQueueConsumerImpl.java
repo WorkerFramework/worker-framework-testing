@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2022 Micro Focus or one of its affiliates.
+ * Copyright 2022 Micro Focus or one of its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package com.hpe.caf.worker.testing;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 
 import com.hpe.caf.api.Codec;
@@ -69,22 +68,27 @@ public class SimpleQueueConsumerImpl implements QueueConsumer
 
     }
 
-    private void deserialize(final Delivery delivery) throws CodecException
+    private void deserialize(final Delivery delivery) throws Exception
     {
         try {
-            System.out.println("pkoko "+ Arrays.toString(delivery.getMessageData()));
             final TaskMessage taskMessage = codec.deserialise(delivery.getMessageData(), TaskMessage.class, DecodeMethod.LENIENT);
             System.out.println(taskMessage.getTaskId() + ", status: " + taskMessage.getTaskStatus());
             synchronized(syncLock) {
                 resultHandler.handleResult(taskMessage);
             }
-        } catch (Exception e) {
+            return;
+        } catch (final Exception ignored){
+
+        }
+        try {
             final QueueTaskMessage taskMessage =
                     codec.deserialise(delivery.getMessageData(), QueueTaskMessage.class, DecodeMethod.LENIENT);
             System.out.println(taskMessage.getTaskId() + ", status: " + taskMessage.getTaskStatus());
             synchronized(syncLock) {
                 resultHandler.handleResult(taskMessage);
             }
+        } catch (final Exception e){
+            throw new Exception("Invalid data received. It should be a QueueTaskMessage or a TaskMessage.");
         }
     }
 
