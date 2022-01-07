@@ -15,19 +15,20 @@
  */
 package com.hpe.caf.worker.testing;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.concurrent.BlockingQueue;
+
 import com.hpe.caf.api.Codec;
 import com.hpe.caf.api.CodecException;
 import com.hpe.caf.api.DecodeMethod;
+import com.hpe.caf.api.worker.QueueTaskMessage;
 import com.hpe.caf.api.worker.TaskMessage;
 import com.hpe.caf.util.rabbitmq.Delivery;
 import com.hpe.caf.util.rabbitmq.Event;
 import com.hpe.caf.util.rabbitmq.QueueConsumer;
 import com.rabbitmq.client.Channel;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.concurrent.BlockingQueue;
-import java.util.function.ObjDoubleConsumer;
 
 /**
  * Created by ploch on 01/11/2015.
@@ -57,11 +58,7 @@ public class SimpleQueueConsumerImpl implements QueueConsumer
         System.out.print("New delivery");
 
         try {
-            TaskMessage taskMessage = codec.deserialise(delivery.getMessageData(), TaskMessage.class, DecodeMethod.LENIENT);
-            System.out.println(taskMessage.getTaskId() + ", status: " + taskMessage.getTaskStatus());
-            synchronized (syncLock) {
-                resultHandler.handleResult(taskMessage);
-            }
+            deserialize(delivery);
         } catch (CodecException e) {
             e.printStackTrace();
             throw new AssertionError("Failed: " + e.getMessage());
@@ -70,6 +67,25 @@ public class SimpleQueueConsumerImpl implements QueueConsumer
             throw new AssertionError("Failed: " + e.getMessage());
         }
 
+    }
+
+    private void deserialize(final Delivery delivery) throws CodecException
+    {
+        try {
+            System.out.println("pkoko "+ Arrays.toString(delivery.getMessageData()));
+            final TaskMessage taskMessage = codec.deserialise(delivery.getMessageData(), TaskMessage.class, DecodeMethod.LENIENT);
+            System.out.println(taskMessage.getTaskId() + ", status: " + taskMessage.getTaskStatus());
+            synchronized(syncLock) {
+                resultHandler.handleResult(taskMessage);
+            }
+        } catch (Exception e) {
+            final QueueTaskMessage taskMessage =
+                    codec.deserialise(delivery.getMessageData(), QueueTaskMessage.class, DecodeMethod.LENIENT);
+            System.out.println(taskMessage.getTaskId() + ", status: " + taskMessage.getTaskStatus());
+            synchronized(syncLock) {
+                resultHandler.handleResult(taskMessage);
+            }
+        }
     }
 
     @Override
