@@ -35,7 +35,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * Created by ploch on 08/11/2015.
  */
-public class QueueManager implements Closeable
+public class QueueManager<T> implements Closeable
 {
     private final QueueServices queueServices;
     private final WorkerServices workerServices;
@@ -111,7 +111,7 @@ public class QueueManager implements Closeable
         }
     }
 
-    public void publishDebugOutput(TaskMessage message) throws CodecException, IOException
+    public void publishDebugOutput(T message) throws CodecException, IOException
     {
         byte[] data = workerServices.getCodec().serialise(message);
         debugConChan.basicPublish("", debugOutputQueueName, MessageProperties.TEXT_PLAIN, data);

@@ -21,8 +21,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.workerframework</groupId>
-    <artifactId>worker-framework-testing</artifactId>
+    <groupId>com.github.workerframework.testing</groupId>
+    <artifactId>workerframework-testing</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -51,8 +51,8 @@
     </properties>
 
     <modules>
-        <module>worker-testing-util</module>
-        <module>worker-testing-integration</module>
+        <module>workerframework-testing-util</module>
+        <module>workerframework-testing-integration</module>
     </modules>
 
     <dependencyManagement>
@@ -141,14 +141,9 @@
                 <version>5.2.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.github.workerframework</groupId>
-                <artifactId>worker-testing-integration</artifactId>
-                <version>5.2.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.workerframework</groupId>
-                <artifactId>worker-testing-util</artifactId>
-                <version>5.2.0-SNAPSHOT</version>
+                <groupId>com.github.workerframework.testing</groupId>
+                <artifactId>workerframework-testing-util</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.github.workerframework</groupId>
