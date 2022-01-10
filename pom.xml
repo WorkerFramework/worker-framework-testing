@@ -38,13 +38,6 @@
 
     <inceptionYear>2022</inceptionYear>
 
-    <licenses>
-        <license>
-            <name>Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-        </license>
-    </licenses>
-
     <properties>
         <copyrightYear>2022</copyrightYear>
         <copyrightNotice>Copyright ${copyrightYear} Micro Focus or one of its affiliates.</copyrightNotice>
@@ -169,5 +162,31 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>andyreidz</id>
+            <name>Andy Reid</name>
+            <email>andrew.reid@microfocus.com</email>
+        </developer>
+        <developer>
+            <id>dermot-hardy</id>
+            <name>Dermot Hardy</name>
+            <email>dermot.hardy@microfocus.com</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/WorkerFramework/worker-framework-testing.git</connection>
+        <developerConnection>scm:git:https://github.com/WorkerFramework/worker-framework-testing.git</developerConnection>
+        <url>https://github.com/WorkerFramework/worker-framework-testing</url>
+    </scm>
 
 </project>
