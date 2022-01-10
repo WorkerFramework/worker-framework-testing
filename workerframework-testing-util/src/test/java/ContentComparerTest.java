@@ -19,19 +19,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.function.Supplier;
 
 import junit.framework.Assert;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
-
-import com.hpe.caf.api.worker.QueueTaskMessage;
-import com.hpe.caf.worker.testing.QueueManager;
 
 /**
  *
@@ -83,25 +76,6 @@ public class ContentComparerTest
         Assert.assertNotNull("source content: " + resourceName, is);
         final String source = IOUtils.toString(is, encoding);
         return source;
-    }
-
-    private static Supplier<QueueTaskMessage> getMessageFromQueue(final QueueManager<QueueTaskMessage> queueManager)
-            throws Exception
-    {
-
-
-        final List<Object> result = new ArrayList<>();
-        queueManager.start(result::add);
-        final List<QueueTaskMessage> qtm = new ArrayList<>();
-        for (Object obj: result) {
-            System.out.println("carolo: "+ obj);
-            qtm.add((QueueTaskMessage)obj);
-        }
-
-        return () -> {
-
-            return qtm.get(0);
-        };
     }
 
     private String getStringFromResource(final String resourceName) throws IOException

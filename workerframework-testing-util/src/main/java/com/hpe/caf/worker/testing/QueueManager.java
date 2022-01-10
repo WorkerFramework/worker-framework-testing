@@ -63,7 +63,7 @@ public class QueueManager<T> implements Closeable
         this.debugEnabled = debugEnabled;
     }
 
-    public Thread start(ResultHandler resultHandler) throws IOException
+    public Thread start(ResultHandler<T> resultHandler) throws IOException
     {
         connection = queueServices.getConnection();
         pubChan = connection.createChannel();
