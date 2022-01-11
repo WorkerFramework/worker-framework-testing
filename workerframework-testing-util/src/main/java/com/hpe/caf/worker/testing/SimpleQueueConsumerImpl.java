@@ -75,7 +75,7 @@ public class SimpleQueueConsumerImpl<T> implements QueueConsumer
             final TaskMessage taskMessage = codec.deserialise(delivery.getMessageData(), TaskMessage.class, DecodeMethod.LENIENT);
             System.out.println(taskMessage.getTaskId() + ", status: " + taskMessage.getTaskStatus());
             synchronized(syncLock) {
-                resultHandler.handleResult((T)taskMessage);
+                resultHandler.handleResult((T)taskMessage, codec);
             }
             return;
         } catch (final Exception ignored){}
@@ -84,7 +84,7 @@ public class SimpleQueueConsumerImpl<T> implements QueueConsumer
                     codec.deserialise(delivery.getMessageData(), QueueTaskMessage.class, DecodeMethod.LENIENT);
             System.out.println(taskMessage.getTaskId() + ", status: " + taskMessage.getTaskStatus());
             synchronized(syncLock) {
-                resultHandler.handleResult((T)taskMessage);
+                resultHandler.handleResult((T)taskMessage, codec);
             }
         } catch (final Exception e){
             throw new Exception("Invalid data received. It should be a QueueTaskMessage or a TaskMessage.");

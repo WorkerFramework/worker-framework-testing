@@ -16,14 +16,18 @@
 package com.hpe.caf.worker.testing;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
+import com.hpe.caf.api.Codec;
 import com.hpe.caf.api.CodecException;
 import com.hpe.caf.api.worker.QueueTaskMessage;
 import com.hpe.caf.api.worker.TaskMessage;
+import com.hpe.caf.worker.testing.validation.ValuePropertyValidator;
 
 /**
  * Created by ploch on 08/11/2015.
@@ -33,7 +37,7 @@ public class ProcessorDeliveryHandler<T> implements ResultHandler<T>
     private final ResultProcessor resultProcessor;
     private ExecutionContext context;
     private QueueManager queueManager;
-
+    private static final Logger LOG = LoggerFactory.getLogger(ValuePropertyValidator.class);
     public ProcessorDeliveryHandler(ResultProcessor resultProcessor, ExecutionContext context, QueueManager queueManager)
     {
         this.resultProcessor = resultProcessor;
@@ -42,10 +46,10 @@ public class ProcessorDeliveryHandler<T> implements ResultHandler<T>
     }
 
     @Override
-    public void handleResult(final T input)
+    public void handleResult(final T input, Codec codec)
     {
 
-        final TaskMessage taskMessage = convertIntoTaskMessage(input);
+        final TaskMessage taskMessage = convertIntoTaskMessage(input, codec);
         if (this.queueManager.isDebugEnabled()) {
             try {
                 queueManager.publishDebugOutput(taskMessage);
@@ -93,11 +97,11 @@ public class ProcessorDeliveryHandler<T> implements ResultHandler<T>
         checkForFinished();
     }
 
-    private TaskMessage convertIntoTaskMessage(final T input)
+    private TaskMessage convertIntoTaskMessage(final T input, final Codec codec)
     {
         final TaskMessage taskMessage;
         if (input instanceof QueueTaskMessage) {
-            QueueTaskMessage qtm = (QueueTaskMessage)input;
+            final QueueTaskMessage qtm = (QueueTaskMessage)input;
             taskMessage = new TaskMessage();
             taskMessage.setContext(qtm.getContext());
             taskMessage.setCorrelationId(qtm.getCorrelationId());
@@ -105,15 +109,31 @@ public class ProcessorDeliveryHandler<T> implements ResultHandler<T>
             taskMessage.setSourceInfo(qtm.getSourceInfo());
             taskMessage.setTaskClassifier(qtm.getTaskClassifier());
             taskMessage.setTaskApiVersion(qtm.getTaskApiVersion());
-            taskMessage.setTaskData(qtm.getTaskData().toString().getBytes(StandardCharsets.UTF_8));
             taskMessage.setTaskStatus(qtm.getTaskStatus());
             taskMessage.setTracking(qtm.getTracking());
             taskMessage.setTaskId(qtm.getTaskId());
             taskMessage.setVersion(qtm.getVersion());
+            try {
+                final byte[] taskData;
+                if (isTaskDataString(qtm)) {
+                    taskData = Base64.decodeBase64((String)qtm.getTaskData());
+                } else {
+                    taskData = codec.serialise(qtm.getTaskData());
+                }
+                taskMessage.setTaskData(taskData);
+            } catch (final CodecException e) {
+                LOG.error("Issue while serializing {}", qtm.getTaskData());
+                return null;
+            }
         } else {
             taskMessage = (TaskMessage)input;
         }
         return taskMessage;
+    }
+
+    public static boolean isTaskDataString(final QueueTaskMessage queueTaskMessage)
+    {
+        return queueTaskMessage.getTaskData() instanceof String;
     }
 
     private String buildFailedMessage(TestItem testItem, Throwable throwable)
