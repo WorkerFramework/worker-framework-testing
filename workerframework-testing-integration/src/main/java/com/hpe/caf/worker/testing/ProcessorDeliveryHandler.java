@@ -121,9 +121,9 @@ public class ProcessorDeliveryHandler<T> implements ResultHandler<T>
                     taskData = codec.serialise(qtm.getTaskData());
                 }
                 taskMessage.setTaskData(taskData);
-            } catch (final CodecException e) {
+            } catch (final CodecException ex) {
                 LOG.error("Issue while serializing {}", qtm.getTaskData());
-                return null;
+                throw new RuntimeException(ex);
             }
         } else {
             taskMessage = (TaskMessage)input;
