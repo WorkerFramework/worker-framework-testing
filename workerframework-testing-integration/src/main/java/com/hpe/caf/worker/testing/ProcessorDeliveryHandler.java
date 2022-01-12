@@ -27,6 +27,8 @@ import com.hpe.caf.api.Codec;
 import com.hpe.caf.api.CodecException;
 import com.hpe.caf.api.worker.QueueTaskMessage;
 import com.hpe.caf.api.worker.TaskMessage;
+import com.hpe.caf.util.ModuleLoader;
+import com.hpe.caf.util.ModuleLoaderException;
 import com.hpe.caf.worker.testing.validation.ValuePropertyValidator;
 
 /**
@@ -37,8 +39,10 @@ public class ProcessorDeliveryHandler<T> implements ResultHandler<T>
     private final ResultProcessor resultProcessor;
     private ExecutionContext context;
     private QueueManager queueManager;
+    final Codec codec = ModuleLoader.getService(Codec.class);
     private static final Logger LOG = LoggerFactory.getLogger(ValuePropertyValidator.class);
     public ProcessorDeliveryHandler(ResultProcessor resultProcessor, ExecutionContext context, QueueManager queueManager)
+            throws ModuleLoaderException
     {
         this.resultProcessor = resultProcessor;
         this.context = context;
@@ -46,10 +50,10 @@ public class ProcessorDeliveryHandler<T> implements ResultHandler<T>
     }
 
     @Override
-    public void handleResult(final T input, Codec codec)
+    public void handleResult(final T input)
     {
 
-        final TaskMessage taskMessage = convertIntoTaskMessage(input, codec);
+        final TaskMessage taskMessage = convertIntoTaskMessage(input);
         if (this.queueManager.isDebugEnabled()) {
             try {
                 queueManager.publishDebugOutput(taskMessage);
@@ -97,7 +101,7 @@ public class ProcessorDeliveryHandler<T> implements ResultHandler<T>
         checkForFinished();
     }
 
-    private TaskMessage convertIntoTaskMessage(final T input, final Codec codec)
+    private TaskMessage convertIntoTaskMessage(final T input)
     {
         final TaskMessage taskMessage;
         if (input instanceof QueueTaskMessage) {

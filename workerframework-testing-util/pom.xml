@@ -63,10 +63,6 @@
             <artifactId>amqp-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework</groupId>
-            <artifactId>worker-api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.github.cafapi.util</groupId>
             <artifactId>util-naming</artifactId>
         </dependency>
@@ -85,6 +81,10 @@
         <dependency>
             <groupId>com.github.workerframework</groupId>
             <artifactId>worker-configs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.workerframework</groupId>
+            <artifactId>worker-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.workerframework</groupId>

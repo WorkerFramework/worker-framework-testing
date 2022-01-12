@@ -15,12 +15,10 @@
  */
 package com.hpe.caf.worker.testing;
 
-import com.hpe.caf.api.Codec;
-
 /**
  * Created by ploch on 08/11/2015.
  */
 public interface ResultHandler<T>
 {
-    void handleResult(T taskMessage, Codec codec);
+    void handleResult(T taskMessage);
 }
