@@ -1,8 +1,0 @@
-{
-    "accessKey": "AKIAILPGEXAERZOJHC6Q",
-    "secretKey": "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",
-    "bucketName": "andyreid-bucket",
-    "proxyProtocol": "HTTP",
-    "proxyHost": "proxy.sdc.hp.com",
-    "proxyPort": 8080
-}

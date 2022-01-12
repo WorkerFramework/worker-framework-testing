@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2015-2021 Micro Focus or one of its affiliates.
+    Copyright 2022 Micro Focus or one of its affiliates.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -21,12 +21,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.workerframework</groupId>
-    <artifactId>worker-framework-aggregator</artifactId>
-    <version>5.2.0-SNAPSHOT</version>
+    <groupId>com.github.workerframework.testing</groupId>
+    <artifactId>workerframework-testing</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Worker Framework</name>
+    <name>Worker Framework Testing</name>
     <description>Provides a foundation for building cross-platform, cloud-ready, distributed data-processing microservices.</description>
     <url>https://workerframework.github.io/worker-framework/</url>
 
@@ -35,53 +35,18 @@
         <artifactId>caf-common-parent</artifactId>
         <version>2.3.0-212</version>
     </parent>
-    
-    <inceptionYear>2015</inceptionYear>
 
-    <licenses>
-        <license>
-            <name>Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-        </license>
-    </licenses>
+    <inceptionYear>2022</inceptionYear>
 
-    <developers>
-        <developer>
-            <id>andyreidz</id>
-            <name>Andy Reid</name>
-            <email>andrew.reid@microfocus.com</email>
-        </developer>
-        <developer>
-            <id>dermot-hardy</id>
-            <name>Dermot Hardy</name>
-            <email>dermot.hardy@microfocus.com</email>
-        </developer>
-    </developers>
-    
     <properties>
-        <copyrightYear>2021</copyrightYear>
+        <copyrightYear>2022</copyrightYear>
+        <copyrightNotice>Copyright ${copyrightYear} Micro Focus or one of its affiliates.</copyrightNotice>
         <enforceCorrectDependencies>true</enforceCorrectDependencies>
     </properties>
 
     <modules>
-        <module>docs</module>
-        <module>worker-configs</module>
-        <module>worker-default-configs</module>
-        <module>worker-api</module>
-        <module>worker-caf</module>
-        <module>util-rabbitmq</module>
-        <module>util-store</module>
-        <module>standard-worker-container</module>
-        <module>worker-core</module>
-        <module>worker-queue-rabbit</module>
-        <module>worker-store-fs</module>
-        <module>worker-testing-util</module>
-        <module>worker-testing-integration</module>
-        <module>worker-framework</module>
-        <module>worker-store-s3</module>
-        <module>worker-store-mem</module>
-        <module>worker-store-http</module>
-        <module>worker-tracking-report</module>
+        <module>workerframework-testing-util</module>
+        <module>workerframework-testing-integration</module>
     </modules>
 
     <dependencyManagement>
@@ -139,7 +104,7 @@
                 <artifactId>worker-configs</artifactId>
                 <version>5.2.0-SNAPSHOT</version>
             </dependency>
-           <dependency>
+            <dependency>
                 <groupId>com.github.workerframework</groupId>
                 <artifactId>worker-core</artifactId>
                 <version>5.2.0-SNAPSHOT</version>
@@ -170,14 +135,9 @@
                 <version>5.2.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.github.workerframework</groupId>
-                <artifactId>worker-testing-integration</artifactId>
-                <version>5.2.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.workerframework</groupId>
-                <artifactId>worker-testing-util</artifactId>
-                <version>5.2.0-SNAPSHOT</version>
+                <groupId>com.github.workerframework.testing</groupId>
+                <artifactId>workerframework-testing-util</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.github.workerframework</groupId>
@@ -203,10 +163,30 @@
         </dependencies>
     </dependencyManagement>
 
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>andyreidz</id>
+            <name>Andy Reid</name>
+            <email>andrew.reid@microfocus.com</email>
+        </developer>
+        <developer>
+            <id>dermot-hardy</id>
+            <name>Dermot Hardy</name>
+            <email>dermot.hardy@microfocus.com</email>
+        </developer>
+    </developers>
+
     <scm>
-        <connection>scm:git:https://github.com/WorkerFramework/worker-framework.git</connection>
-        <developerConnection>scm:git:https://github.com/WorkerFramework/worker-framework.git</developerConnection>
-        <url>https://github.com/WorkerFramework/worker-framework</url>
+        <connection>scm:git:https://github.com/WorkerFramework/worker-framework-testing.git</connection>
+        <developerConnection>scm:git:https://github.com/WorkerFramework/worker-framework-testing.git</developerConnection>
+        <url>https://github.com/WorkerFramework/worker-framework-testing</url>
     </scm>
 
 </project>
