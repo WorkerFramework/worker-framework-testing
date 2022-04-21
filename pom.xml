@@ -23,7 +23,7 @@
 
     <groupId>com.github.workerframework.testing</groupId>
     <artifactId>workerframework-testing</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0-82</version>
     <packaging>pom</packaging>
 
     <name>Worker Framework Testing</name>
@@ -137,7 +137,7 @@
             <dependency>
                 <groupId>com.github.workerframework.testing</groupId>
                 <artifactId>workerframework-testing-util</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <version>1.0.0-82</version>
             </dependency>
             <dependency>
                 <groupId>com.github.workerframework</groupId>

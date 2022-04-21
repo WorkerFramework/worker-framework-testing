@@ -22,7 +22,7 @@
     <parent>
         <artifactId>workerframework-testing</artifactId>
         <groupId>com.github.workerframework.testing</groupId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0-82</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
