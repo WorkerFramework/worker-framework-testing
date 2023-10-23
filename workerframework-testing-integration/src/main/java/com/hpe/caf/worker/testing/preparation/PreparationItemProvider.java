@@ -61,7 +61,7 @@ public class PreparationItemProvider<TWorkerTask, TWorkerResult, TInput extends 
     @Override
     protected TestItem createTestItem(Path inputFile, Path expectedFile) throws Exception
     {
-        TInput testInput = configuration.getInputClass().newInstance();
+        TInput testInput = configuration.getInputClass().getDeclaredConstructor().newInstance();
         testInput.setUseDataStore(configuration.isUseDataStore());
         testInput.setContainerId(configuration.getDataStoreContainerId());
 
@@ -72,7 +72,7 @@ public class PreparationItemProvider<TWorkerTask, TWorkerResult, TInput extends 
 
         testInput.setInputFile(normalizedRelativePath);
 
-        TExpectation testExpectation = configuration.getExpectationClass().newInstance();
+        TExpectation testExpectation = configuration.getExpectationClass().getDeclaredConstructor().newInstance();
 
         return new TestItem<>(normalizedRelativePath, testInput, testExpectation);
     }
