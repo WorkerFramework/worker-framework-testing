@@ -39,7 +39,7 @@ public class TestRunner
 
     public static void runTests(Class<TestControllerProvider> controllerProviderClass, boolean dataGenerationMode) throws Exception
     {
-        TestControllerProvider controllerProvider = controllerProviderClass.newInstance();
+        TestControllerProvider controllerProvider = controllerProviderClass.getDeclaredConstructor().newInstance();
         runTests(controllerProvider, dataGenerationMode);
     }
 

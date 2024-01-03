@@ -20,12 +20,6 @@ import com.hpe.caf.api.CodecException;
 import com.hpe.caf.api.worker.TaskMessage;
 import com.hpe.caf.api.worker.TaskStatus;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 /**
  * The base implementation of {@link ResultProcessor}.
  *
@@ -96,6 +90,7 @@ public abstract class AbstractResultProcessor<TResult, TInput, TExpected> implem
      */
     protected abstract boolean processWorkerResult(TestItem<TInput, TExpected> testItem, TaskMessage message, TResult result) throws Exception;
 
+    @Override
     public String getInputIdentifier(TaskMessage message)
     {
         return "";

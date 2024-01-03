@@ -20,10 +20,11 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-import junit.framework.Assert;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.similarity.JaroWinklerDistance;
+import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.joda.time.DateTime;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -105,10 +106,10 @@ public class ContentComparerTest
 
         switch (algorithm) {
             case WINKLER: {
-                return (longerLength - StringUtils.getJaroWinklerDistance(longer, shorter)) / (double) longerLength;
+                return (longerLength - new JaroWinklerDistance().apply(longer, shorter)) / (double) longerLength;
             }
             case LEVENSTEIN: {
-                return (longerLength - StringUtils.getLevenshteinDistance(longer, shorter, threshold)) / (double) longerLength;
+                return (longerLength - new LevenshteinDistance(threshold).apply(longer, shorter)) / (double) longerLength;
             }
             case SIFT_SIMPLE: {
                 return (longerLength - sift4Distance_Simple(longer, shorter, threshold)) / (double) longerLength;

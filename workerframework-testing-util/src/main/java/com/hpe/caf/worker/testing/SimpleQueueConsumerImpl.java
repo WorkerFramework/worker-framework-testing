@@ -22,7 +22,6 @@ import java.util.concurrent.BlockingQueue;
 import com.hpe.caf.api.Codec;
 import com.hpe.caf.api.CodecException;
 import com.hpe.caf.api.DecodeMethod;
-import com.hpe.caf.api.worker.QueueTaskMessage;
 import com.hpe.caf.api.worker.TaskMessage;
 import com.hpe.caf.util.rabbitmq.Delivery;
 import com.hpe.caf.util.rabbitmq.Event;
@@ -32,18 +31,18 @@ import com.rabbitmq.client.Channel;
 /**
  * Created by ploch on 01/11/2015.
  */
-public class SimpleQueueConsumerImpl<T> implements QueueConsumer
+public class SimpleQueueConsumerImpl implements QueueConsumer
 {
     private final BlockingQueue<Event<QueueConsumer>> eventQueue;
     private final Channel channel;
-    private final ResultHandler<T> resultHandler;
+    private final ResultHandler resultHandler;
     private final Codec codec;
     private final ArrayList<Delivery> deliveries = new ArrayList<>();
 
     private static final Object syncLock = new Object();
 
     public SimpleQueueConsumerImpl(final BlockingQueue<Event<QueueConsumer>> queue, Channel channel,
-                                   ResultHandler<T> resultHandler, final Codec codec)
+                                   ResultHandler resultHandler, final Codec codec)
     {
         this.eventQueue = queue;
         this.channel = channel;
@@ -58,7 +57,11 @@ public class SimpleQueueConsumerImpl<T> implements QueueConsumer
         System.out.print("New delivery");
 
         try {
-            deserialize(delivery);
+            final TaskMessage taskMessage = codec.deserialise(delivery.getMessageData(), TaskMessage.class, DecodeMethod.LENIENT);
+            System.out.println(taskMessage.getTaskId() + ", status: " + taskMessage.getTaskStatus());
+            synchronized (syncLock) {
+                resultHandler.handleResult(taskMessage);
+            }
         } catch (CodecException e) {
             e.printStackTrace();
             throw new AssertionError("Failed: " + e.getMessage());
@@ -67,28 +70,6 @@ public class SimpleQueueConsumerImpl<T> implements QueueConsumer
             throw new AssertionError("Failed: " + e.getMessage());
         }
 
-    }
-
-    private void deserialize(final Delivery delivery) throws Exception
-    {
-        try {
-            final TaskMessage taskMessage = codec.deserialise(delivery.getMessageData(), TaskMessage.class, DecodeMethod.LENIENT);
-            System.out.println(taskMessage.getTaskId() + ", status: " + taskMessage.getTaskStatus());
-            synchronized(syncLock) {
-                resultHandler.handleResult((T)taskMessage);
-            }
-            return;
-        } catch (final Exception ignored){}
-        try {
-            final QueueTaskMessage taskMessage =
-                    codec.deserialise(delivery.getMessageData(), QueueTaskMessage.class, DecodeMethod.LENIENT);
-            System.out.println(taskMessage.getTaskId() + ", status: " + taskMessage.getTaskStatus());
-            synchronized(syncLock) {
-                resultHandler.handleResult((T)taskMessage);
-            }
-        } catch (final Exception e){
-            throw new Exception("Invalid data received. It should be a QueueTaskMessage or a TaskMessage.");
-        }
     }
 
     @Override
