@@ -17,32 +17,22 @@ package com.hpe.caf.worker.testing;
 
 import java.io.IOException;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
-import com.hpe.caf.api.Codec;
 import com.hpe.caf.api.CodecException;
-import com.hpe.caf.api.worker.QueueTaskMessage;
 import com.hpe.caf.api.worker.TaskMessage;
-import com.hpe.caf.util.ModuleLoader;
-import com.hpe.caf.util.ModuleLoaderException;
-import com.hpe.caf.worker.testing.validation.ValuePropertyValidator;
 
 /**
  * Created by ploch on 08/11/2015.
  */
-public class ProcessorDeliveryHandler<T> implements ResultHandler<T>
+public class ProcessorDeliveryHandler implements ResultHandler
 {
     private final ResultProcessor resultProcessor;
     private ExecutionContext context;
     private QueueManager queueManager;
-    final Codec codec = ModuleLoader.getService(Codec.class);
-    private static final Logger LOG = LoggerFactory.getLogger(ValuePropertyValidator.class);
+
     public ProcessorDeliveryHandler(ResultProcessor resultProcessor, ExecutionContext context, QueueManager queueManager)
-            throws ModuleLoaderException
     {
         this.resultProcessor = resultProcessor;
         this.context = context;
@@ -50,10 +40,8 @@ public class ProcessorDeliveryHandler<T> implements ResultHandler<T>
     }
 
     @Override
-    public void handleResult(final T input)
+    public void handleResult(final TaskMessage taskMessage)
     {
-
-        final TaskMessage taskMessage = convertIntoTaskMessage(input);
         if (this.queueManager.isDebugEnabled()) {
             try {
                 queueManager.publishDebugOutput(taskMessage);
@@ -99,45 +87,6 @@ public class ProcessorDeliveryHandler<T> implements ResultHandler<T>
             context.getItemStore().remove(testItem.getTag());
         }
         checkForFinished();
-    }
-
-    private TaskMessage convertIntoTaskMessage(final T input)
-    {
-        final TaskMessage taskMessage;
-        if (input instanceof QueueTaskMessage) {
-            final QueueTaskMessage qtm = (QueueTaskMessage)input;
-            taskMessage = new TaskMessage();
-            taskMessage.setContext(qtm.getContext());
-            taskMessage.setCorrelationId(qtm.getCorrelationId());
-            taskMessage.setPriority(qtm.getPriority());
-            taskMessage.setSourceInfo(qtm.getSourceInfo());
-            taskMessage.setTaskClassifier(qtm.getTaskClassifier());
-            taskMessage.setTaskApiVersion(qtm.getTaskApiVersion());
-            taskMessage.setTaskStatus(qtm.getTaskStatus());
-            taskMessage.setTracking(qtm.getTracking());
-            taskMessage.setTaskId(qtm.getTaskId());
-            taskMessage.setVersion(qtm.getVersion());
-            try {
-                final byte[] taskData;
-                if (isTaskDataString(qtm)) {
-                    taskData = Base64.decodeBase64((String)qtm.getTaskData());
-                } else {
-                    taskData = codec.serialise(qtm.getTaskData());
-                }
-                taskMessage.setTaskData(taskData);
-            } catch (final CodecException ex) {
-                LOG.error("Issue while serializing {}", qtm.getTaskData());
-                throw new RuntimeException(ex);
-            }
-        } else {
-            taskMessage = (TaskMessage)input;
-        }
-        return taskMessage;
-    }
-
-    public static boolean isTaskDataString(final QueueTaskMessage queueTaskMessage)
-    {
-        return queueTaskMessage.getTaskData() instanceof String;
     }
 
     private String buildFailedMessage(TestItem testItem, Throwable throwable)
