@@ -21,6 +21,7 @@ import com.hpe.caf.api.worker.TaskCallback;
 import com.hpe.caf.api.worker.TaskInformation;
 import com.hpe.caf.api.worker.TaskRejectedException;
 import com.hpe.caf.configs.RabbitConfiguration;
+import com.hpe.caf.util.rabbitmq.QueueCreator;
 import com.hpe.caf.util.rabbitmq.RabbitUtil;
 import com.hpe.caf.worker.queue.rabbit.RabbitWorkerQueueConfiguration;
 import com.rabbitmq.client.Channel;
@@ -28,6 +29,9 @@ import com.rabbitmq.client.Connection;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
@@ -51,22 +55,26 @@ public class QueueServicesFactory
     }
 
     public static QueueServices create(final RabbitWorkerQueueConfiguration configuration, final String resultsQueueName, final Codec codec)
-        throws IOException, TimeoutException
+            throws IOException, TimeoutException, URISyntaxException, NoSuchAlgorithmException, KeyManagementException
     {
         Connection connection = createConnection(configuration, new NoOpCallback());
         Channel pubChan = connection.createChannel();
         Channel conChan = connection.createChannel();
 
-        RabbitUtil.declareWorkerQueue(pubChan, configuration.getInputQueue(), configuration.getMaxPriority());
+        RabbitUtil.declareWorkerQueue(
+                pubChan, configuration.getInputQueue(), configuration.getMaxPriority(), QueueCreator.RABBIT_PROP_QUEUE_TYPE_QUORUM
+        );
         if(StringUtils.isNotEmpty(resultsQueueName)) {
-            RabbitUtil.declareWorkerQueue(conChan, resultsQueueName, configuration.getMaxPriority());
+            RabbitUtil.declareWorkerQueue(
+                    conChan, resultsQueueName, configuration.getMaxPriority(), QueueCreator.RABBIT_PROP_QUEUE_TYPE_QUORUM
+            );
         }
 
         return new QueueServices(connection, pubChan, configuration.getInputQueue(), conChan, resultsQueueName, codec, configuration.getMaxPriority());
     }
 
     private static Connection createConnection(RabbitWorkerQueueConfiguration configuration, final TaskCallback callback)
-        throws IOException, TimeoutException
+            throws IOException, TimeoutException, URISyntaxException, NoSuchAlgorithmException, KeyManagementException
     {
         final RabbitConfiguration rabbitConfiguration = configuration.getRabbitConfiguration();
         return RabbitUtil.createRabbitConnection(rabbitConfiguration);

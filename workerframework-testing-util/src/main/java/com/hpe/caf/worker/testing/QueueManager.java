@@ -20,6 +20,7 @@ import com.hpe.caf.api.worker.TaskMessage;
 import com.hpe.caf.util.rabbitmq.DefaultRabbitConsumer;
 import com.hpe.caf.util.rabbitmq.Event;
 import com.hpe.caf.util.rabbitmq.QueueConsumer;
+import com.hpe.caf.util.rabbitmq.QueueCreator;
 import com.hpe.caf.util.rabbitmq.RabbitUtil;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -68,17 +69,29 @@ public class QueueManager implements Closeable
         connection = queueServices.getConnection();
         pubChan = connection.createChannel();
         conChan = connection.createChannel();
-        RabbitUtil.declareWorkerQueue(pubChan, queueServices.getWorkerInputQueue(), queueServices.getMaxPriority());
+        RabbitUtil.declareWorkerQueue(
+                pubChan, queueServices.getWorkerInputQueue(), queueServices.getMaxPriority(),
+                QueueCreator.RABBIT_PROP_QUEUE_TYPE_QUORUM
+        );
         if(StringUtils.isNotEmpty(queueServices.getWorkerResultsQueue())) {
-            RabbitUtil.declareWorkerQueue(conChan, queueServices.getWorkerResultsQueue(), queueServices.getMaxPriority());
+            RabbitUtil.declareWorkerQueue(
+                    conChan, queueServices.getWorkerResultsQueue(), queueServices.getMaxPriority(),
+                    QueueCreator.RABBIT_PROP_QUEUE_TYPE_QUORUM
+            );
         }
         purgeQueues();
 
         if (debugEnabled) {
             debugPubChan = connection.createChannel();
             debugConChan = connection.createChannel();
-            RabbitUtil.declareWorkerQueue(debugPubChan, debugInputQueueName, queueServices.getMaxPriority());
-            RabbitUtil.declareWorkerQueue(debugConChan, debugOutputQueueName, queueServices.getMaxPriority());
+            RabbitUtil.declareWorkerQueue(
+                    debugPubChan, debugInputQueueName, queueServices.getMaxPriority(),
+                    QueueCreator.RABBIT_PROP_QUEUE_TYPE_QUORUM
+            );
+            RabbitUtil.declareWorkerQueue(
+                    debugConChan, debugOutputQueueName, queueServices.getMaxPriority(),
+                    QueueCreator.RABBIT_PROP_QUEUE_TYPE_QUORUM
+            );
             debugPubChan.queuePurge(debugInputQueueName);
             debugConChan.queuePurge(debugOutputQueueName);
         }
