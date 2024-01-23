@@ -1,9 +1,8 @@
-!not-ready-for-release!
-
 #### Version Number
 ${version-number}
 
 #### New Features
+- None
 
 #### Breaking Changes
 - **US361030:** Java 8 and Java 11 support dropped  
@@ -13,3 +12,4 @@ ${version-number}
   This version of the testing libraries is intended for use with Worker Framework 7.
 
 #### Known Issues
+- None
