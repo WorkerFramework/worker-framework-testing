@@ -24,8 +24,9 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.joda.time.DateTime;
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
 /**
  *
@@ -53,8 +54,10 @@ public class ContentComparerTest
 
         final double minPercentage = 99;
 
-        Assert.assertTrue("Sift4 Algorithm: " + Algorithms.SIFT_SIMPLE + " must return > " + minPercentage + "% similarity", calculateSimilarityChoicePercentage(source, source2, MAX_OFFSET_TO_FIND_CHARACTERS, Algorithms.SIFT_SIMPLE) > minPercentage);
-        Assert.assertTrue("Sift4 Algorithm: " + Algorithms.SIFT_COMMON + " must return > " + minPercentage + "% similarity", calculateSimilarityChoicePercentage(source, source2, MAX_OFFSET_TO_FIND_CHARACTERS, Algorithms.SIFT_COMMON) > minPercentage);
+        assertTrue(calculateSimilarityChoicePercentage(source, source2, MAX_OFFSET_TO_FIND_CHARACTERS, Algorithms.SIFT_SIMPLE) > minPercentage,
+                "Sift4 Algorithm: " + Algorithms.SIFT_SIMPLE + " must return > " + minPercentage + "% similarity");
+        assertTrue(calculateSimilarityChoicePercentage(source, source2, MAX_OFFSET_TO_FIND_CHARACTERS, Algorithms.SIFT_COMMON) > minPercentage,
+                "Sift4 Algorithm: " + Algorithms.SIFT_COMMON + " must return > " + minPercentage + "% similarity");
     }
 
     @Test
@@ -67,14 +70,16 @@ public class ContentComparerTest
 
         final double minPercentage = 95;
 
-        Assert.assertTrue("Sift4 Algorithm: " + Algorithms.SIFT_SIMPLE + " must return > " + minPercentage + "% similarity", calculateSimilarityChoicePercentage(source, source2, MAX_OFFSET_TO_FIND_CHARACTERS, Algorithms.SIFT_SIMPLE) > minPercentage);
-        Assert.assertTrue("Sift4 Algorithm: " + Algorithms.SIFT_COMMON + " must return > " + minPercentage + "% similarity", calculateSimilarityChoicePercentage(source, source2, MAX_OFFSET_TO_FIND_CHARACTERS, Algorithms.SIFT_COMMON) > minPercentage);
+        assertTrue(calculateSimilarityChoicePercentage(source, source2, MAX_OFFSET_TO_FIND_CHARACTERS, Algorithms.SIFT_SIMPLE) > minPercentage,
+                "Sift4 Algorithm: " + Algorithms.SIFT_SIMPLE + " must return > " + minPercentage + "% similarity");
+        assertTrue(calculateSimilarityChoicePercentage(source, source2, MAX_OFFSET_TO_FIND_CHARACTERS, Algorithms.SIFT_COMMON) > minPercentage,
+                "Sift4 Algorithm: " + Algorithms.SIFT_COMMON + " must return > " + minPercentage + "% similarity");
     }
 
     private String getStringFromResource(final String resourceName, Charset encoding) throws IOException
     {
         InputStream is = this.getClass().getResourceAsStream(resourceName);
-        Assert.assertNotNull("source content: " + resourceName, is);
+        assertNotNull(is, "source content: " + resourceName);
         final String source = IOUtils.toString(is, encoding);
         return source;
     }
