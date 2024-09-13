@@ -40,6 +40,7 @@
 
     <properties>
         <copyrightYear>2024</copyrightYear>
+        <worker.framework.version>8.2.0-US922349-SNAPSHOT</worker.framework.version>
     </properties>
 
     <modules>
@@ -127,27 +128,37 @@
             <dependency>
                 <groupId>com.github.workerframework</groupId>
                 <artifactId>util-rabbitmq</artifactId>
-                <version>8.0.0-1196</version>
+                <version>${worker.framework.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.workerframework</groupId>
                 <artifactId>worker-api</artifactId>
-                <version>8.0.0-1196</version>
+                <version>${worker.framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.workerframework</groupId>
+                <artifactId>worker-core</artifactId>
+                <version>${worker.framework.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.workerframework</groupId>
                 <artifactId>worker-configs</artifactId>
-                <version>8.0.0-1196</version>
+                <version>${worker.framework.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.workerframework</groupId>
                 <artifactId>worker-queue-rabbit</artifactId>
-                <version>8.0.0-1196</version>
+                <version>${worker.framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.workerframework</groupId>
+                <artifactId>worker-queue-sqs</artifactId>
+                <version>${worker.framework.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.workerframework</groupId>
                 <artifactId>worker-store-http</artifactId>
-                <version>8.0.0-1196</version>
+                <version>${worker.framework.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.workerframework.testing</groupId>
@@ -278,6 +289,13 @@
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
                 <version>2.2</version>
+            </dependency>
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>bom</artifactId>
+                <version>2.27.7</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

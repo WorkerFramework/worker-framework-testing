@@ -42,9 +42,28 @@
             <groupId>com.github.workerframework</groupId>
             <artifactId>util-rabbitmq</artifactId>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.github.workerframework</groupId>-->
+<!--            <artifactId>worker-core</artifactId>-->
+<!--            <scope>provided</scope>-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.glassfish.expressly</groupId>-->
+<!--                    <artifactId>expressly</artifactId>-->
+<!--                </exclusion>-->
+<!--                <exclusion>-->
+<!--                    <groupId>com.sun.activation</groupId>-->
+<!--                    <artifactId>jakarta.activation</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.github.workerframework</groupId>
             <artifactId>worker-queue-rabbit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.workerframework</groupId>
+            <artifactId>worker-queue-sqs</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -85,6 +104,41 @@
         <dependency>
             <groupId>com.github.workerframework</groupId>
             <artifactId>worker-store-http</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>aws-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>sdk-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>auth</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>regions</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>sqs</artifactId>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>

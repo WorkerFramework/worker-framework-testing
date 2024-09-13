@@ -21,18 +21,14 @@ import com.hpe.caf.api.worker.TrackingInfo;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * The {@code TestController} class responsible for executing test cases and controlling execution. {@code TestController} will:
  * <ol>
  * <li>Load {@link TestItem} instances using {@link TestItemProvider} implementation. These are either full test cases or stubs for
  * generating test data
- * <li>Start the {@link QueueManager} which manages interactions with RabbitMQ (publishing and listening to result messages)
+ * <li>Start the {@link RabbitQueueManager} which manages interactions with RabbitMQ (publishing and listening to result messages)
  * <li>Create a worker task for each {@code TestItem} using {@link WorkerTaskFactory} implementation
  * <li>Publish worker tasks to the RabbitMQ
  * </ol>
@@ -112,7 +108,7 @@ public class TestController implements Closeable
      * Executes the tests using types provided.
      * <ul>
      * <li>Retrieves test cases - {@link TestItem} instances from {@link TestItemProvider}
-     * <li>Starts {@link QueueManager}
+     * <li>Starts {@link RabbitQueueManager}
      * <li>Iterates over test cases and uses them to create and publish worker tasks
      * <li>Stores test case data in {@link TestItemStore} so they can be retrieved when worker finishes task processing
      * </ul>

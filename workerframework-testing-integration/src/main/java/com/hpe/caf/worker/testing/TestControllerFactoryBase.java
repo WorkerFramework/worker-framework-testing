@@ -16,7 +16,13 @@
 package com.hpe.caf.worker.testing;
 
 import com.hpe.caf.api.ConfigurationSource;
+import com.hpe.caf.worker.core.MessageSystemConfiguration;
 import com.hpe.caf.worker.queue.rabbit.RabbitWorkerQueueConfiguration;
+import com.hpe.caf.worker.queue.sqs.config.SQSWorkerQueueConfiguration;
+import com.hpe.caf.worker.testing.sqs.SQSQueueManager;
+import com.hpe.caf.worker.testing.validation.ValuePropertyValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.function.Function;
 
@@ -25,6 +31,9 @@ import java.util.function.Function;
  */
 public abstract class TestControllerFactoryBase<T>
 {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TestControllerFactoryBase.class);
+    private static String SQS_IMPLEMENTATION = "sqs";
     public T createDefault(
         String outputQueue,
         TestItemProvider itemProvider,
@@ -58,20 +67,39 @@ public abstract class TestControllerFactoryBase<T>
                      ResultProcessor resultProcessor) throws Exception
     {
         ConfigurationSource configurationSource = workerServices.getConfigurationSource();
-        RabbitWorkerQueueConfiguration rabbitConfiguration = configurationSource.getConfiguration(RabbitWorkerQueueConfiguration.class);
 
-        rabbitConfiguration.getRabbitConfiguration().setRabbitHost(SettingsProvider.defaultProvider.getSetting(SettingNames.dockerHostAddress));
-        rabbitConfiguration.getRabbitConfiguration().setRabbitPort(Integer.parseInt(SettingsProvider.defaultProvider.getSetting(SettingNames.rabbitmqNodePort)));
-
-        QueueServices queueServices = QueueServicesFactory.create(rabbitConfiguration, queueName, workerServices.getCodec());
-        boolean debugEnabled = SettingsProvider.defaultProvider.getBooleanSetting(SettingNames.createDebugMessage, false);
-        QueueManager queueManager = new QueueManager(queueServices, workerServices, debugEnabled);
+        final var queueManager = getQueueManager(configurationSource, workerServices, queueName);
 
         boolean stopOnError = SettingsProvider.defaultProvider.getBooleanSetting(SettingNames.stopOnError, false);
 
         T controller = createController(workerServices, itemProvider, queueManager, workerTaskFactory, resultProcessor, stopOnError);
 
         return controller;
+    }
+
+    private QueueManager getQueueManager(
+            final ConfigurationSource configurationSource,
+            final WorkerServices workerServices,
+            final String queueName
+    ) throws Exception
+    {
+        boolean debugEnabled = SettingsProvider.defaultProvider.getBooleanSetting(SettingNames.createDebugMessage, false);
+        final String messagingImplementation = SettingsProvider.defaultProvider.getSetting(SettingNames.messagingImplementation);
+        if (SQS_IMPLEMENTATION.equals(messagingImplementation)) {
+            final SQSWorkerQueueConfiguration queueCfg = configurationSource.getConfiguration(SQSWorkerQueueConfiguration.class);
+            queueCfg.getSqsConfiguration().setAwsHost(SettingsProvider.defaultProvider.getSetting(SettingNames.sqsHostName));
+            queueCfg.getSqsConfiguration().setAwsPort(Integer.parseInt(SettingsProvider.defaultProvider.getSetting(SettingNames.sqsCtrlPort)));
+            return new SQSQueueManager(queueCfg, workerServices, queueName, debugEnabled);
+        }
+
+        RabbitWorkerQueueConfiguration rabbitConfiguration = configurationSource.getConfiguration(RabbitWorkerQueueConfiguration.class);
+
+        rabbitConfiguration.getRabbitConfiguration().setRabbitHost(SettingsProvider.defaultProvider.getSetting(SettingNames.dockerHostAddress));
+        rabbitConfiguration.getRabbitConfiguration().setRabbitPort(Integer.parseInt(SettingsProvider.defaultProvider.getSetting(SettingNames.rabbitmqNodePort)));
+
+        QueueServices queueServices = QueueServicesFactory.create(rabbitConfiguration, queueName, workerServices.getCodec());
+
+        return new RabbitQueueManager(queueServices, workerServices, debugEnabled);
     }
 
     public abstract T createController(WorkerServices workerServices,
