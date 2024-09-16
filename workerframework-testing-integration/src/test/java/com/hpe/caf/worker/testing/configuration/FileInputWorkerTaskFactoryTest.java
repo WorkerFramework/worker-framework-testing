@@ -67,7 +67,7 @@ public class FileInputWorkerTaskFactoryTest
     {
     }
 
-    // DDD reinstate @Test
+    @Test
     public void testFileInputWorkerTaskFactoryCreateTaskDoesNotThrowFileSystemException() throws Exception
     {
         // Mock DataStore

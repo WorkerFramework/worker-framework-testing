@@ -48,20 +48,14 @@ public class SQSQueueManager implements QueueManager
     private SqsClient sqsClient;
     private QueueInfo inputQueueInfo;
     private QueueInfo resultsQueueInfo;
-    private QueueInfo deadLetterQueueInfo;
-    private QueueInfo retryQueueInfo;
     private QueueInfo debugInputQueueInfo;
     private QueueInfo debugResultQueueInfo;
-    private QueueConsumer inputQueueConsumer;
     private ResultQueueConsumer resultQueueConsumer;
     private final WorkerServices workerServices;
     private String debugInputQueueName;
     private String resultsQueueName;
     private String debugResultsQueueName;
     private boolean debugEnabled;
-    private final MetricsReporter metricsReporter;
-    private final AtomicBoolean receiveMessages;
-    private VisibilityMonitor visibilityMonitor;
 
     public SQSQueueManager(
             final SQSWorkerQueueConfiguration queueCfg,
@@ -75,44 +69,17 @@ public class SQSQueueManager implements QueueManager
         this.debugInputQueueName = queueCfg.getInputQueue() + "-debug";
         this.debugResultsQueueName = resultsQueue + "-debug";
         this.debugEnabled = debugEnabled;
-        metricsReporter = new MetricsReporter();
-        receiveMessages = new AtomicBoolean(true);
     }
 
-    // DDD resultHandler needs to be ProcessDeliveryHandler
     @Override
     public Thread start(final ResultHandler resultHandler) throws Exception
     {
-        final QueueInfo dockerInputQueueInfo;
-        final QueueInfo dockerResultsQueueInfo;
-
         sqsClient = SQSUtil.getSqsClient(queueCfg.getSqsConfiguration());
-//        sqsClient = SqsClient.builder()
-//                .endpointOverride(new URI("http://sqs.us-east-1.localhost.localstack.cloud:14566"))
-//                .region(Region.of(queueCfg.getSqsConfiguration().getAwsRegion()))
-//                .credentialsProvider(() -> new AwsCredentials()
-//                {
-//                    @Override
-//                    public String accessKeyId()
-//                    {
-//                        return "x";
-//                    }
-//
-//                    @Override
-//                    public String secretAccessKey()
-//                    {
-//                        return "x";
-//                    }
-//                })
-//                .build();
 
         LOG.info("SQS url: {}", queueCfg.getSqsConfiguration().getURIString());
 
-        dockerInputQueueInfo = SQSUtil.createQueue(sqsClient, queueCfg.getInputQueue(), queueCfg);
-        dockerResultsQueueInfo = SQSUtil.createQueue(sqsClient, resultsQueueName, queueCfg);
-
-        inputQueueInfo = convertPort(dockerInputQueueInfo);
-        resultsQueueInfo = convertPort(dockerResultsQueueInfo);
+        inputQueueInfo = SQSUtil.createQueue(sqsClient, queueCfg.getInputQueue(), queueCfg);
+        resultsQueueInfo = SQSUtil.createQueue(sqsClient, resultsQueueName, queueCfg);
 
         final var resultHandlerCallback = new ResultHandlerCallback(resultHandler, workerServices.getCodec());
 
@@ -125,9 +92,8 @@ public class SQSQueueManager implements QueueManager
 
         purgeQueues();
 
-        // DDD Whats this doing
+
         if (debugEnabled) {
-            // DDD do the port shuffle
             debugInputQueueInfo = SQSUtil.createQueue(sqsClient, debugInputQueueName, queueCfg);
             debugResultQueueInfo = SQSUtil.createQueue(sqsClient, debugResultsQueueName, queueCfg);
             purgeQueue(debugInputQueueInfo);
@@ -138,13 +104,6 @@ public class SQSQueueManager implements QueueManager
         resultQueueThread.start();
 
         return resultQueueThread;
-    }
-
-    private QueueInfo convertPort(final QueueInfo dockerInputQueueInfo)
-    {
-        var url = dockerInputQueueInfo.url();
-        //url = url.replace("4566", "14566"); // DD this could be redundant pending test
-        return new QueueInfo(dockerInputQueueInfo.name(), url, dockerInputQueueInfo.arn());
     }
 
     private void purgeQueue(final QueueInfo queueInfo)
