@@ -19,10 +19,7 @@ import com.hpe.caf.api.CodecException;
 import com.hpe.caf.api.worker.TaskMessage;
 import com.hpe.caf.worker.queue.sqs.QueueInfo;
 import com.hpe.caf.worker.queue.sqs.config.SQSWorkerQueueConfiguration;
-import com.hpe.caf.worker.queue.sqs.consumer.QueueConsumer;
-import com.hpe.caf.worker.queue.sqs.metrics.MetricsReporter;
 import com.hpe.caf.worker.queue.sqs.util.SQSUtil;
-import com.hpe.caf.worker.queue.sqs.visibility.VisibilityMonitor;
 import com.hpe.caf.worker.testing.QueueManager;
 import com.hpe.caf.worker.testing.ResultHandler;
 import com.hpe.caf.worker.testing.WorkerServices;
@@ -37,7 +34,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SQSQueueManager implements QueueManager
 {
@@ -48,14 +44,13 @@ public class SQSQueueManager implements QueueManager
     private SqsClient sqsClient;
     private QueueInfo inputQueueInfo;
     private QueueInfo resultsQueueInfo;
-    private QueueInfo debugInputQueueInfo;
     private QueueInfo debugResultQueueInfo;
     private ResultQueueConsumer resultQueueConsumer;
     private final WorkerServices workerServices;
-    private String debugInputQueueName;
-    private String resultsQueueName;
-    private String debugResultsQueueName;
-    private boolean debugEnabled;
+    private final String debugInputQueueName;
+    private final String resultsQueueName;
+    private final String debugResultsQueueName;
+    private final boolean debugEnabled;
 
     public SQSQueueManager(
             final SQSWorkerQueueConfiguration queueCfg,
@@ -94,7 +89,7 @@ public class SQSQueueManager implements QueueManager
 
 
         if (debugEnabled) {
-            debugInputQueueInfo = SQSUtil.createQueue(sqsClient, debugInputQueueName, queueCfg);
+            final QueueInfo debugInputQueueInfo = SQSUtil.createQueue(sqsClient, debugInputQueueName, queueCfg);
             debugResultQueueInfo = SQSUtil.createQueue(sqsClient, debugResultsQueueName, queueCfg);
             purgeQueue(debugInputQueueInfo);
             purgeQueue(debugResultQueueInfo);
