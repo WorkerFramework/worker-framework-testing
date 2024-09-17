@@ -39,7 +39,6 @@ public class SQSQueueManager implements QueueManager
 {
     private static final Logger LOG = LoggerFactory.getLogger(SQSQueueManager.class);
 
-    //private Thread inputQueueThread;
     private final SQSWorkerQueueConfiguration queueCfg;
     private SqsClient sqsClient;
     private QueueInfo inputQueueInfo;
