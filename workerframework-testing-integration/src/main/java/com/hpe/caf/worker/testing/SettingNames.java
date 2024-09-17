@@ -40,7 +40,6 @@ public final class SettingNames
     public static final String rabbitmqNodePort = "rabbitmq.node.port";
     public static final String rabbitmqCtrlPort = "rabbitmq.ctrl.port";
 
-    public static final String sqsHostName = "sqs.hostname";
     public static final String sqsCtrlPort = "sqs.ctrl.port";
 
     public static final String messagingImplementation = "messaging.implementation";

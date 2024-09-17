@@ -42,21 +42,6 @@
             <groupId>com.github.workerframework</groupId>
             <artifactId>util-rabbitmq</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.github.workerframework</groupId>-->
-<!--            <artifactId>worker-core</artifactId>-->
-<!--            <scope>provided</scope>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.glassfish.expressly</groupId>-->
-<!--                    <artifactId>expressly</artifactId>-->
-<!--                </exclusion>-->
-<!--                <exclusion>-->
-<!--                    <groupId>com.sun.activation</groupId>-->
-<!--                    <artifactId>jakarta.activation</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>com.github.workerframework</groupId>
             <artifactId>worker-queue-rabbit</artifactId>
