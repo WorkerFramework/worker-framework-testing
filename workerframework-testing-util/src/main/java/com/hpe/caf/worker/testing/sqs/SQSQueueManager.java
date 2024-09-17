@@ -43,6 +43,7 @@ public class SQSQueueManager implements QueueManager
     private SqsClient sqsClient;
     private QueueInfo inputQueueInfo;
     private QueueInfo resultsQueueInfo;
+    private QueueInfo debugInputQueueInfo;
     private QueueInfo debugResultQueueInfo;
     private ResultQueueConsumer resultQueueConsumer;
     private final WorkerServices workerServices;
@@ -88,7 +89,7 @@ public class SQSQueueManager implements QueueManager
 
 
         if (debugEnabled) {
-            final QueueInfo debugInputQueueInfo = SQSUtil.createQueue(sqsClient, debugInputQueueName, queueCfg);
+            debugInputQueueInfo = SQSUtil.createQueue(sqsClient, debugInputQueueName, queueCfg);
             debugResultQueueInfo = SQSUtil.createQueue(sqsClient, debugResultsQueueName, queueCfg);
             purgeQueue(debugInputQueueInfo);
             purgeQueue(debugResultQueueInfo);
@@ -121,7 +122,7 @@ public class SQSQueueManager implements QueueManager
         byte[] data = workerServices.getCodec().serialise(message);
         sendMessage(inputQueueInfo.url(), new HashMap<>(), new String(data, StandardCharsets.UTF_8));
         if (debugEnabled) {
-            sendMessage(inputQueueInfo.url(), new HashMap<>(), new String(data, StandardCharsets.UTF_8));
+            sendMessage(debugInputQueueInfo.url(), new HashMap<>(), new String(data, StandardCharsets.UTF_8));
         }
     }
 
