@@ -17,6 +17,8 @@ package com.hpe.caf.worker.testing;
 
 import java.io.IOException;
 
+import com.hpe.caf.worker.queue.sqs.SQSWorkerQueue;
+import com.hpe.caf.worker.testing.sqs.SQSQueueManager;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import com.google.common.base.Strings;
@@ -71,7 +73,8 @@ public class ProcessorDeliveryHandler implements ResultHandler
         try {
             boolean success = resultProcessor.process(testItem, taskMessage);
             System.out.println("Item " + testItem.getTag() + ": Result processor success: " + success);
-            if (!success) {
+            // DDD testing build failures
+            if (queueManager instanceof SQSQueueManager) {
                 context.failed(testItem, "Item " + testItem.getTag() + ": Result processor didn't return success. Result processor name: " + resultProcessor.getClass().getName() + "\nNo detailed message returned.");
                 testItem.setCompleted(true);
             } else {
