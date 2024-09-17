@@ -3,8 +3,9 @@
 The **Worker Framework Testing** is a set of tools that facilitate the implementation of testing for modules created on the basis of 
 the [Worker framework](https://workerframework.github.io/worker-framework/)
 
-The framework connects to a RabbitMQ messaging system by default, but has the ability to connect to a SQS implementation 
-by adding configuration in the target project pom.
+The framework connects to a RabbitMQ messaging system by default, but has the ability to connect to a containerized SQS 
+implementation [localstack](https://hub.docker.com/r/localstack/localstack) by adding configuration in the target 
+project pom.
 
 1. Add the localstack image to the projects docker-versions-maven-plugin.
 ```
