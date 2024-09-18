@@ -87,8 +87,8 @@ public abstract class TestControllerFactoryBase<T>
         final String messagingImplementation = SettingsProvider.defaultProvider.getSetting(SettingNames.messagingImplementation);
         if (SQS_IMPLEMENTATION.equals(messagingImplementation)) {
             final SQSWorkerQueueConfiguration queueCfg = configurationSource.getConfiguration(SQSWorkerQueueConfiguration.class);
-            queueCfg.getSqsConfiguration().setAwsHost(SettingsProvider.defaultProvider.getSetting(SettingNames.dockerHostAddress));
-            queueCfg.getSqsConfiguration().setAwsPort(Integer.parseInt(SettingsProvider.defaultProvider.getSetting(SettingNames.sqsCtrlPort)));
+            queueCfg.getSqsConfiguration().setSqsHost(SettingsProvider.defaultProvider.getSetting(SettingNames.dockerHostAddress));
+            queueCfg.getSqsConfiguration().setSqsPort(Integer.parseInt(SettingsProvider.defaultProvider.getSetting(SettingNames.sqsCtrlPort)));
             return new SQSQueueManager(queueCfg, workerServices, queueName, debugEnabled);
         }
 
