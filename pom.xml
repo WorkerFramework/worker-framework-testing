@@ -21,7 +21,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.workerframework.testing</groupId>
+    <groupId>com.github.workerframework.worker.testing</groupId>
     <artifactId>workerframework-testing</artifactId>
     <version>3.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -90,67 +90,67 @@
                 <version>6.5.1</version>
             </dependency>
             <dependency>
-                <groupId>com.github.cafapi</groupId>
+                <groupId>com.github.cafapi.common.api</groupId>
                 <artifactId>caf-api</artifactId>
-                <version>3.0.0-549</version>
+                <version>4.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.github.cafapi.cipher</groupId>
+                <groupId>com.github.cafapi.common.ciphers</groupId>
                 <artifactId>cipher-null</artifactId>
-                <version>3.0.0-549</version>
+                <version>4.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.github.cafapi.config</groupId>
+                <groupId>com.github.cafapi.common.config</groupId>
                 <artifactId>config-decoder</artifactId>
-                <version>3.0.0-549</version>
+                <version>4.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.github.cafapi.config</groupId>
-                <artifactId>config-system</artifactId>
-                <version>3.0.0-549</version>
+                <groupId>com.github.cafapi.common.bootstrapconfigs</groupId>
+                <artifactId>bootstrapconfig-system</artifactId>
+                <version>4.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.github.cafapi.util</groupId>
+                <groupId>com.github.cafapi.common.util</groupId>
                 <artifactId>util-moduleloader</artifactId>
-                <version>3.0.0-549</version>
+                <version>4.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.github.cafapi.util</groupId>
+                <groupId>com.github.cafapi.common.util</groupId>
                 <artifactId>util-naming</artifactId>
-                <version>3.0.0-549</version>
+                <version>4.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.github.cafapi.util</groupId>
+                <groupId>com.github.cafapi.common.util</groupId>
                 <artifactId>util-ref</artifactId>
-                <version>3.0.0-549</version>
+                <version>4.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.github.workerframework</groupId>
+                <groupId>com.github.workerframework.worker.util</groupId>
                 <artifactId>util-rabbitmq</artifactId>
-                <version>8.0.0-1196</version>
+                <version>9.0.0-975260-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.github.workerframework</groupId>
+                <groupId>com.github.workerframework.worker</groupId>
                 <artifactId>worker-api</artifactId>
-                <version>8.0.0-1196</version>
+                <version>9.0.0-975260-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.github.workerframework</groupId>
+                <groupId>com.github.workerframework.worker</groupId>
                 <artifactId>worker-configs</artifactId>
-                <version>8.0.0-1196</version>
+                <version>9.0.0-975260-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.github.workerframework</groupId>
+                <groupId>com.github.workerframework.worker.queues</groupId>
                 <artifactId>worker-queue-rabbit</artifactId>
-                <version>8.0.0-1196</version>
+                <version>9.0.0-975260-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.github.workerframework</groupId>
+                <groupId>com.github.workerframework.worker.datastores</groupId>
                 <artifactId>worker-store-http</artifactId>
-                <version>8.0.0-1196</version>
+                <version>9.0.0-975260-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.github.workerframework.testing</groupId>
+                <groupId>com.github.workerframework.worker.testing</groupId>
                 <artifactId>workerframework-testing-util</artifactId>
                 <version>3.1.0-SNAPSHOT</version>
             </dependency>

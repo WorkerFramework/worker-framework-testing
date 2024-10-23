@@ -21,7 +21,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>workerframework-testing</artifactId>
-        <groupId>com.github.workerframework.testing</groupId>
+        <groupId>com.github.workerframework.worker.testing</groupId>
         <version>3.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -30,11 +30,11 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.workerframework</groupId>
+            <groupId>com.github.workerframework.worker</groupId>
             <artifactId>worker-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework.testing</groupId>
+            <groupId>com.github.workerframework.worker.testing</groupId>
             <artifactId>workerframework-testing-util</artifactId>
         </dependency>
         <dependency>
@@ -66,7 +66,7 @@
             <artifactId>testng</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.cafapi</groupId>
+            <groupId>com.github.cafapi.common.api</groupId>
             <artifactId>caf-api</artifactId>
         </dependency>
         <dependency>
@@ -90,15 +90,15 @@
             <artifactId>joda-time</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework</groupId>
+            <groupId>com.github.workerframework.worker</groupId>
             <artifactId>worker-configs</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.cafapi.util</groupId>
+            <groupId>com.github.cafapi.common.util</groupId>
             <artifactId>util-ref</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework</groupId>
+            <groupId>com.github.workerframework.worker.queues</groupId>
             <artifactId>worker-queue-rabbit</artifactId>
         </dependency>
         <dependency>
