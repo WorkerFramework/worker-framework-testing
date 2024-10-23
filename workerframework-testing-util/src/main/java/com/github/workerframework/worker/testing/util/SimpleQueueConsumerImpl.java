@@ -1,0 +1,94 @@
+/*
+ * Copyright 2022-2024 Open Text.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.github.workerframework.worker.testing.util;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
+
+import com.github.cafapi.common.api.Codec;
+import com.github.cafapi.common.api.CodecException;
+import com.github.cafapi.common.api.DecodeMethod;
+import com.github.workerframework.util.rabbitmq.Delivery;
+import com.github.workerframework.util.rabbitmq.Event;
+import com.github.workerframework.util.rabbitmq.QueueConsumer;
+import com.github.workerframework.worker.api.TaskMessage;
+import com.rabbitmq.client.Channel;
+
+/**
+ * Created by ploch on 01/11/2015.
+ */
+public class SimpleQueueConsumerImpl implements QueueConsumer
+{
+    private final BlockingQueue<Event<QueueConsumer>> eventQueue;
+    private final Channel channel;
+    private final ResultHandler resultHandler;
+    private final Codec codec;
+    private final ArrayList<Delivery> deliveries = new ArrayList<>();
+
+    private static final Object syncLock = new Object();
+
+    public SimpleQueueConsumerImpl(final BlockingQueue<Event<QueueConsumer>> queue, Channel channel,
+                                   ResultHandler resultHandler, final Codec codec)
+    {
+        this.eventQueue = queue;
+        this.channel = channel;
+        this.resultHandler = resultHandler;
+        this.codec = codec;
+    }
+
+    @Override
+    public void processDelivery(Delivery delivery)
+    {
+
+        System.out.print("New delivery");
+
+        try {
+            final TaskMessage taskMessage = codec.deserialise(delivery.getMessageData(), TaskMessage.class, DecodeMethod.LENIENT);
+            System.out.println(taskMessage.getTaskId() + ", status: " + taskMessage.getTaskStatus());
+            synchronized (syncLock) {
+                resultHandler.handleResult(taskMessage);
+            }
+        } catch (CodecException e) {
+            e.printStackTrace();
+            throw new AssertionError("Failed: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new AssertionError("Failed: " + e.getMessage());
+        }
+
+    }
+
+    @Override
+    public void processAck(long tag)
+    {
+        try {
+            channel.basicAck(tag, false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void processReject(long tag)
+    {
+    }
+
+    @Override
+    public void processDrop(long tag)
+    {
+    }
+}
