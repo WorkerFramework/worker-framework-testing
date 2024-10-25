@@ -21,7 +21,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>workerframework-testing</artifactId>
-        <groupId>com.github.workerframework.worker.testing</groupId>
+        <groupId>com.github.workerframework.testing</groupId>
         <version>4.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -30,11 +30,11 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.workerframework.worker</groupId>
+            <groupId>com.github.workerframework</groupId>
             <artifactId>worker-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework.worker.testing</groupId>
+            <groupId>com.github.workerframework.testing</groupId>
             <artifactId>workerframework-testing-util</artifactId>
         </dependency>
         <dependency>
@@ -90,7 +90,7 @@
             <artifactId>joda-time</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework.worker</groupId>
+            <groupId>com.github.workerframework</groupId>
             <artifactId>worker-configs</artifactId>
         </dependency>
         <dependency>
@@ -98,7 +98,7 @@
             <artifactId>util-ref</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework.worker.queues</groupId>
+            <groupId>com.github.workerframework</groupId>
             <artifactId>worker-queue-rabbit</artifactId>
         </dependency>
         <dependency>

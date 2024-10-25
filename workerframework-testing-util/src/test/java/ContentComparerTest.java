@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import static com.github.workerframework.worker.testing.util.Sift4Comparator.sift4Distance_Common;
-import static com.github.workerframework.worker.testing.util.Sift4Comparator.sift4Distance_Simple;
+import static com.github.workerframework.testing.util.Sift4Comparator.sift4Distance_Common;
+import static com.github.workerframework.testing.util.Sift4Comparator.sift4Distance_Simple;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;

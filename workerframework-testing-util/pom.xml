@@ -21,7 +21,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>workerframework-testing</artifactId>
-        <groupId>com.github.workerframework.worker.testing</groupId>
+        <groupId>com.github.workerframework.testing</groupId>
         <version>4.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -39,11 +39,11 @@
             <artifactId>config-decoder</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework.worker.util</groupId>
+            <groupId>com.github.workerframework</groupId>
             <artifactId>util-rabbitmq</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework.worker.queues</groupId>
+            <groupId>com.github.workerframework</groupId>
             <artifactId>worker-queue-rabbit</artifactId>
         </dependency>
         <dependency>
@@ -75,15 +75,15 @@
             <artifactId>cipher-null</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework.worker</groupId>
+            <groupId>com.github.workerframework</groupId>
             <artifactId>worker-configs</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework.worker</groupId>
+            <groupId>com.github.workerframework</groupId>
             <artifactId>worker-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.workerframework.worker.datastores</groupId>
+            <groupId>com.github.workerframework</groupId>
             <artifactId>worker-store-http</artifactId>
         </dependency>
         <dependency>
