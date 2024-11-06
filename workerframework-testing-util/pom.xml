@@ -31,11 +31,11 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.cafapi.common.api</groupId>
+            <groupId>com.github.cafapi.common</groupId>
             <artifactId>caf-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.cafapi.common.config</groupId>
+            <groupId>com.github.cafapi.common</groupId>
             <artifactId>config-decoder</artifactId>
         </dependency>
         <dependency>
@@ -59,19 +59,19 @@
             <artifactId>amqp-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.cafapi.common.util</groupId>
+            <groupId>com.github.cafapi.common</groupId>
             <artifactId>util-naming</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.cafapi.common.bootstrapconfigs</groupId>
+            <groupId>com.github.cafapi.common</groupId>
             <artifactId>bootstrapconfig-system</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.cafapi.common.util</groupId>
+            <groupId>com.github.cafapi.common</groupId>
             <artifactId>util-moduleloader</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.cafapi.common.ciphers</groupId>
+            <groupId>com.github.cafapi.common</groupId>
             <artifactId>cipher-null</artifactId>
         </dependency>
         <dependency>
