@@ -27,6 +27,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>workerframework-testing-integration</artifactId>
+    <name>workerframework-testing-integration</name>
 
     <dependencies>
         <dependency>
