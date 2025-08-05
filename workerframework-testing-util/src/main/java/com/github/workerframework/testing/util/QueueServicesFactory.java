@@ -16,12 +16,9 @@
 package com.github.workerframework.testing.util;
 
 import com.github.cafapi.common.api.Codec;
+import com.github.workerframework.api.*;
 import com.github.workerframework.util.rabbitmq.QueueCreator;
 import com.github.workerframework.util.rabbitmq.RabbitUtil;
-import com.github.workerframework.api.InvalidTaskException;
-import com.github.workerframework.api.TaskCallback;
-import com.github.workerframework.api.TaskInformation;
-import com.github.workerframework.api.TaskRejectedException;
 import com.github.workerframework.configs.RabbitConfiguration;
 import com.github.workerframework.queues.rabbit.RabbitWorkerQueueConfiguration;
 import com.rabbitmq.client.Channel;
@@ -44,8 +41,8 @@ public class QueueServicesFactory
     {
 
         @Override
-        public void registerNewTask(TaskInformation taskInformation, byte[] bytes, Map<String, Object> headers) throws TaskRejectedException, InvalidTaskException
-        {
+        public void registerNewTask(TaskInformation taskInformation, TaskMessage taskMessage, Map<String, Object> headers) throws TaskRejectedException, InvalidTaskException {
+
         }
 
         @Override
