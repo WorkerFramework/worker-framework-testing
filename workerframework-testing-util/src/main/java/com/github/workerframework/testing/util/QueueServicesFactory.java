@@ -47,7 +47,6 @@ public class QueueServicesFactory
         @Override
         public void registerNewTask(TaskInformation taskInformation, TaskMessage taskMessage, Map<String, Object> headers) throws TaskRejectedException, InvalidTaskException
         {
-
         }
 
         @Override
