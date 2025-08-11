@@ -21,6 +21,7 @@ import com.github.workerframework.util.rabbitmq.RabbitUtil;
 import com.github.workerframework.api.InvalidTaskException;
 import com.github.workerframework.api.TaskCallback;
 import com.github.workerframework.api.TaskInformation;
+import com.github.workerframework.api.TaskMessage;
 import com.github.workerframework.api.TaskRejectedException;
 import com.github.workerframework.configs.RabbitConfiguration;
 import com.github.workerframework.queues.rabbit.RabbitWorkerQueueConfiguration;
@@ -44,7 +45,7 @@ public class QueueServicesFactory
     {
 
         @Override
-        public void registerNewTask(TaskInformation taskInformation, byte[] bytes, Map<String, Object> headers) throws TaskRejectedException, InvalidTaskException
+        public void registerNewTask(TaskInformation taskInformation, TaskMessage taskMessage, Map<String, Object> headers) throws TaskRejectedException, InvalidTaskException
         {
         }
 
